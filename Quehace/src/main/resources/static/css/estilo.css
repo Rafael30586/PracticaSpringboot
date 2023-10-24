@@ -1,0 +1,11 @@
+h1{
+	color: #3c48e5;
+	/*background-color: #061564;*/
+	border-radius: 5%;
+	background: linear-gradient(to bottom,#061564,#4b33d7);
+}
+
+
+.titulo{
+	color: #827c43;
+}
