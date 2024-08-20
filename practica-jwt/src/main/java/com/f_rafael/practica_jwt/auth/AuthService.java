@@ -19,14 +19,22 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
-        User user = user.builder() //Aca falta algo, me error diciendo que user puede no estar instanciado
+        /*
+        User user = user.builder() //Aca falta algo, me da error diciendo que user puede no estar instanciado
                 .username(request.getUsername())
                 .password(request.getPasswod())
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .country(request.getCountry())
                 .role(Role.USER)
-                .build();
+                .build();*/
+        User user = new User();
+        user.setFirstname(request.getFirstname());
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPasswod());
+        user.setLastname(request.getLastname());
+        user.setCountry(request.getCountry());
+        user.setRole(Role.USER);
 
         userRepository.save(user);
 
