@@ -5,13 +5,16 @@ import com.f_rafael.practica_jwt.user.Role;
 import com.f_rafael.practica_jwt.user.User;
 import com.f_rafael.practica_jwt.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final JwtService jwtService;
 
     public AuthResponse login(LoginRequest request) {
