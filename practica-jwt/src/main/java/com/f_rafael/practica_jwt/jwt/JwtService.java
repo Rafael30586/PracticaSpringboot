@@ -1,6 +1,7 @@
 package com.f_rafael.practica_jwt.jwt;
 
 import com.f_rafael.practica_jwt.user.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -12,11 +13,12 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Service
 public class JwtService {
 
-    private final static String SECRET_KEY = "SKJFHGKEK4452J33KF0G99GJDNWJ3681SKEOR5569OFKDKSMM2SDODFO3LFVKMDW";
+    private final static String SECRET_KEY = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
 
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(),user);
@@ -38,10 +40,33 @@ public class JwtService {
     }
 
     public String getUsernameFromToken(String token) {
-        return "";
+        return getClaim(token, Claims::getSubject);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return true;
+        final String username= getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername())&& isTokenExpired(token));
+    }
+
+    private Claims getAllClaims(String token){
+        return Jwts
+                .parser() //En el tutorial figura otro metodo que aca no funciona porque no lo encuentra...
+                .setSigningKey(getKey()) //...el metodo es parserBuilder(), aparentemente es por la version...
+                .build()//..que estoy usando
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = getAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Date getExpiration(String token){
+        return getClaim(token,Claims::getExpiration);
+    }
+
+    private boolean isTokenExpired(String token){
+        return getExpiration(token).before(new Date());
     }
 }
