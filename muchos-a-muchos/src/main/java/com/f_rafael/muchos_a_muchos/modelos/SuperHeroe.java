@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "heroes")
 @AllArgsConstructor
@@ -21,12 +23,19 @@ public class SuperHeroe {
     private String nombreDePila;
     @Column(name = "nombre_como_heroe")
     private String nombreComoHeroe;
-    @Column(name = "tipo_personaje")
     @ManyToOne
+    @JoinColumn(
+            name = "tipo_personaje"
+    )
     private TipoPersonaje tipoPersonaje;
     @Column(name = "super_poder")
     @ManyToMany
-    private SuperPoder superPoder;
+    @JoinTable(
+            name = "heroe_superpoder",
+            joinColumns = @JoinColumn(name = "heroe_id"),
+            inverseJoinColumns = @JoinColumn(name = "super_poder_id")
+    )
+    private List<SuperPoder> superPoderes;
 
     @Override
     public String toString() {
@@ -35,7 +44,7 @@ public class SuperHeroe {
                 ", nombreDePila='" + nombreDePila + '\'' +
                 ", nombreComoHeroe='" + nombreComoHeroe + '\'' +
                 ", tipoPersonaje=" + tipoPersonaje +
-                ", superPoder=" + superPoder +
+                ", superPoder=" + superPoderes +
                 '}';
     }
 }
