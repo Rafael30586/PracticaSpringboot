@@ -22,7 +22,7 @@ public class PruebaControlador {
     }
 
     @GetMapping("/paises")
-    public ResponseEntity<List<String>> respoder2(){
+    public ResponseEntity<List<String>> mostrarPaises(){
         List<String> paises = List.of("Argentina","Hungria","Corea del sur","Bielorusia");
         return ResponseEntity.ok(paises);
     }
